@@ -1,0 +1,6 @@
+# Secrets & credentials
+srcs/.env
+secrets/
+
+# Docker
+*.log
