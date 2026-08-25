@@ -1,20 +1,12 @@
-# MariaDB server configuration
-# This file overrides the default 50-server.cnf
-
 [mysqld]
-# Listen on all interfaces so other containers can connect
+# Allow connections from any IP on the Docker network (default is 127.0.0.1)
 bind-address = 0.0.0.0
-port         = 3306
 
-# Data directory
-datadir      = /var/lib/mysql
+# Port on which MariaDB listens
+port = 3306
 
-# Logging (optional, helpful for debugging)
-log_error    = /var/log/mysql/error.log
+# Location of database storage files
+datadir = /var/lib/mysql
 
-# Allow connections from any host
-skip-networking = false
-
-# Character set
-character-set-server  = utf8mb4
-collation-server      = utf8mb4_general_ci
+# Log file location
+log_error = /var/log/mysql/error.log

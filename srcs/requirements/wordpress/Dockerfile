@@ -11,9 +11,9 @@ RUN apt-get update -y && \
     php7.4-xml \
     php7.4-zip \
     php7.4-intl \
+    php-redis \
     mariadb-client \
-    curl \
-    wget && \
+    curl && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -29,10 +29,6 @@ COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 COPY tools/setup.sh /usr/local/bin/setup.sh
 RUN chmod +x /usr/local/bin/setup.sh
 
-# Create the WordPress directory
-RUN mkdir -p /var/www/html
-
-# Create the PHP-FPM runtime directory (for the PID file)
 RUN mkdir -p /run/php
 
 ENTRYPOINT ["/usr/local/bin/setup.sh"]
