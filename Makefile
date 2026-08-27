@@ -17,6 +17,7 @@ all: setup
 bonus: setup
 	@echo "$(GREEN)Starting all containers (mandatory + bonus)...$(RESET)"
 	$(COMPOSE_BONUS) up --build -d
+	$(COMPOSE_BONUS) restart wordpress
 	@echo "$(GREEN)Full stack is ready.$(RESET)"
 
 # Create data directories on the host

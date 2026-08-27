@@ -53,25 +53,12 @@ if [ ! -f "${WP_PATH}/wp-config.php" ]; then
 fi
 
 # Configure Redis Object Cache if Redis is enabled (Bonus)
-if [ -n "${REDIS_HOST}" ]; then
-    echo "Waiting for Redis..."
-    for i in {1..10}; do
-        if timeout 1 bash -c "</dev/tcp/${REDIS_HOST}/6379" 2>/dev/null; then
-            echo "Redis is ready."
-            break
-        fi
-        sleep 1
-    done
-
-    if timeout 1 bash -c "</dev/tcp/${REDIS_HOST}/6379" 2>/dev/null; then
-        if ! wp plugin is-installed redis-cache --path="${WP_PATH}" --allow-root 2>/dev/null; then
-            echo "Configuring Redis cache..."
-            wp config set WP_REDIS_HOST "${REDIS_HOST}" --path="${WP_PATH}" --allow-root
-            wp config set WP_REDIS_PORT 6379 --raw --path="${WP_PATH}" --allow-root
-            wp plugin install redis-cache --activate --path="${WP_PATH}" --allow-root
-            wp redis enable --path="${WP_PATH}" --allow-root
-            chown -R www-data:www-data "${WP_PATH}"
-        fi
+if timeout 1 bash -c "</dev/tcp/redis/6379" 2>/dev/null; then
+    if ! wp plugin is-installed redis-cache --path="${WP_PATH}" --allow-root 2>/dev/null; then
+        wp config set WP_REDIS_HOST redis --path="${WP_PATH}" --allow-root
+        wp config set WP_REDIS_PORT 6379 --raw --path="${WP_PATH}" --allow-root
+        wp plugin install redis-cache --activate --path="${WP_PATH}" --allow-root
+        wp redis enable --path="${WP_PATH}" --allow-root
     fi
 fi
 
