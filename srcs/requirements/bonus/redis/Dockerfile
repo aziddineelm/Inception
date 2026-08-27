@@ -7,4 +7,4 @@ RUN apt-get update -y && \
 
 COPY conf/redis.conf /etc/redis/redis.conf
 
-CMD ["redis-server", "/etc/redis/redis.conf", "--daemonize", "no"]
+CMD ["redis-server", "/etc/redis/redis.conf"]
