@@ -1,0 +1,70 @@
+services:
+
+  redis:
+    build: ./requirements/bonus/redis
+    image: redis
+    container_name: redis
+    networks:
+      - inception
+    restart: always
+
+  ftp:
+    build: ./requirements/bonus/ftp
+    image: ftp
+    container_name: ftp
+    ports:
+      - "21:21"
+      - "21100:21100"
+    volumes:
+      - wp_data:/var/www/html
+    networks:
+      - inception
+    depends_on:
+      - wordpress
+    restart: always
+    environment:
+      FTP_USER: ${FTP_USER}
+      FTP_PASSWORD: ${FTP_PASSWORD}
+
+  static-site:
+    build: ./requirements/bonus/static-site
+    image: static-site
+    container_name: static-site
+    ports:
+      - "8080:8080"
+    networks:
+      - inception
+    restart: always
+
+  adminer:
+    build: ./requirements/bonus/adminer
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8081:8081"
+    networks:
+      - inception
+    depends_on:
+      - mariadb
+    restart: always
+
+  portainer:
+    build: ./requirements/bonus/portainer
+    image: portainer
+    container_name: portainer
+    ports:
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - inception
+    restart: always
+
+volumes:
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ael-mans/data/portainer
