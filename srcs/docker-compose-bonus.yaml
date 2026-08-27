@@ -8,6 +8,12 @@ services:
       - inception
     restart: always
 
+  wordpress:
+    environment:
+      REDIS_HOST: redis
+    depends_on:
+      - redis
+
   ftp:
     build: ./requirements/bonus/ftp
     image: ftp
