@@ -12,6 +12,7 @@ RUN apt-get update -y && \
     php7.4-zip \
     php7.4-intl \
     php-redis \
+    redis-tools \
     mariadb-client \
     curl && \
     apt-get clean && \

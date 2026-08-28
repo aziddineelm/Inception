@@ -53,7 +53,7 @@ if [ ! -f "${WP_PATH}/wp-config.php" ]; then
 fi
 
 # Configure Redis Object Cache if Redis is enabled (Bonus)
-if timeout 1 bash -c "</dev/tcp/redis/6379" 2>/dev/null; then
+if redis-cli -h redis ping &> /dev/null; then
     if ! wp plugin is-installed redis-cache --path="${WP_PATH}" --allow-root 2>/dev/null; then
         wp config set WP_REDIS_HOST redis --path="${WP_PATH}" --allow-root
         wp config set WP_REDIS_PORT 6379 --raw --path="${WP_PATH}" --allow-root
